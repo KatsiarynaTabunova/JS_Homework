@@ -2,15 +2,23 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <script defer src="script_практика.js"></script>
+    <script defer src="js.js"></script>
   </head>
   <body>
     <div class="header">
       <div class="container">
         <div class="header_logo">
           <img id="logo_header" src="images/logo.png" />
+          <button onclick="showDrobdownMenu()" id="dropbtn" class="hidden">
+            <img
+              id="icon_dropdown"
+              src="images/drobdown_icon_hover.png"
+              onmouseenter='this.src ="images/drobdown_icon_hover.png"'
+              onmouseleave='this.src ="images/drobdown_icon.png"'
+            />
+          </button>
         </div>
 
         <div class="header_line">
@@ -26,13 +34,13 @@
     </div>
 
     <div class="nav">
-      <nav class="menu_nav">
+      <div id="myDropdown" class="menu_nav dropdown-content">
         <a class="link_menu link_border_top" href="@">Menu item</a>
         <a class="link_menu link_border_top" href="@">Menu item</a>
         <a class="link_menu link_border_top" href="@">Menu item</a>
         <a class="link_menu link_border_top" href="@">Menu item</a>
         <a class="link_menu link_border_top" href="@">Menu item</a>
-      </nav>
+      </div>
     </div>
     <div class="main">
       <div class="left_menu">
@@ -83,15 +91,15 @@
           </form>
 
           <div class="item">
-            <span>+New item</span>
+            <span id="new_item">+New item</span>
             <img id="icon_diagramm" src="images/icon_diagramm.png" />
           </div>
         </div>
 
         <div class="text_comments_container">
           <div class="item_comments">
-            <div class="foto_comments_user">
-              <img src="images/photo1.jpg" />
+            <div>
+              <img class="foto_comments_user" src="images/photo1.jpg" />
             </div>
             <div class="text_comments_user">
               <span>User name</span>
@@ -118,8 +126,8 @@
           </div>
 
           <div class="item_comments">
-            <div class="foto_comments_user">
-              <img src="images/photo2.jpg" />
+            <div>
+              <img class="foto_comments_user" src="images/photo2.jpg" />
             </div>
             <div class="text_comments_user">
               <span>User name</span>
@@ -146,8 +154,8 @@
           </div>
 
           <div class="item_comments">
-            <div class="foto_comments_user">
-              <img src="images/photo3.jpg" />
+            <div>
+              <img class="foto_comments_user" src="images/photo3.jpg" />
             </div>
             <div class="text_comments_user">
               <span>User name</span>
@@ -174,8 +182,8 @@
           </div>
 
           <div class="item_comments">
-            <div class="foto_comments_user">
-              <img src="images/photo4.jpg" />
+            <div>
+              <img class="foto_comments_user" src="images/photo4.jpg" />
             </div>
             <div class="text_comments_user">
               <span>User name</span>
