@@ -1,6 +1,7 @@
 // Функциональный стиль ООП
 
-function Animal() {
+function Animal(name) {
+  var name = name;
   var foodAmount = 50;
   var self = this;
 
@@ -23,12 +24,14 @@ function Animal() {
   }
 
   self.feed = function () {
-    return "Насыпаем в миску " + self.dailyNorm() + " корма. ";
+    return (
+      "Насыпаем в миску " + self.dailyNorm() + " корма коту " + name + ". "
+    );
   };
 }
 
-function Cat() {
-  Animal.call(this);
+function Cat(name) {
+  Animal.apply(this, arguments);
 
   this.catPleased = function () {
     return "Кот доволен ^_^";
@@ -42,18 +45,19 @@ function Cat() {
   };
 
   this.stroke = function () {
-    console.log("Гладим кота.");
+    console.log("Гладим кота " + name + ".");
     return this;
   };
 }
 
-var tom = new Cat();
-tom.dailyNorm(60);
-tom.feed().stroke();
+var cat = new Cat("Tom");
+cat.dailyNorm(60);
+cat.feed().stroke();
 
 // Прототипный стиль ООП
 
-function Animal() {
+function Animal(name) {
+  this._name = name;
   this._foodAmount = 50;
 }
 
@@ -76,10 +80,12 @@ Animal.prototype.dailyNorm = function (food) {
 };
 
 Animal.prototype.feed = function () {
-  return "Насыпаем в миску " + this.dailyNorm() + " корма. ";
+  return (
+    "Насыпаем в миску " + this.dailyNorm() + " корма коту " + this._name + "у. "
+  );
 };
 
-function Cat() {
+function Cat(name) {
   Animal.apply(this, arguments);
 }
 
@@ -91,15 +97,16 @@ Cat.prototype.catPleased = function () {
 };
 
 Cat.prototype.feed = function () {
-  return Animal.prototype.feed.apply(this) + this.catPleased();
+  console.log(Animal.prototype.feed.apply(this) + this.catPleased());
+  return this;
 };
 
 Cat.prototype.stroke = function () {
-  return "Гладим кота.";
+  console.log("Гладим кота " + this._name + "a.");
+  return this;
 };
 
-var tom = new Cat();
+var cat = new Cat("Tom");
 
-tom.dailyNorm(60);
-console.log(tom.feed());
-console.log(tom.stroke());
+cat.dailyNorm(60);
+cat.feed().stroke();
