@@ -1,14 +1,8 @@
 //1
-function filterNumbersArr(arr) {
-  var newArr = [];
-
-  arr.forEach(function (item) {
-    if (item > 0) {
-      newArr.push(item);
-    }
+function filterNumbersArr(numbers) {
+  return numbers.filter(function (item) {
+    return item > 0;
   });
-
-  return newArr;
 }
 console.log(filterNumbersArr([-1, 0, 2, 34, -2]));
 
@@ -61,11 +55,9 @@ console.log(divideArr([1, 2, 3, 4], 2));
 console.log(divideArr([1, 2, 3, 4, 5, 6, 7, 8], 3));
 
 //6
-//1 способ(сначала поломала голову над первым решением, а потом нашла второй:)
 function isPossibleDegreeOfTwo(number) {
   while (number >= 2) {
     number = number / 2;
-    console.log(number);
   }
   if (number === 1) {
     return true;
@@ -75,8 +67,4 @@ function isPossibleDegreeOfTwo(number) {
 }
 console.log(isPossibleDegreeOfTwo(5));
 
-//2 способ
-function isPossibleDegreeOfTwo(number) {
-  return number % 2 == 0;
-}
-console.log(isPossibleDegreeOfTwo(8));
+/
