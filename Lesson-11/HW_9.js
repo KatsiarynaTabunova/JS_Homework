@@ -1,19 +1,18 @@
 //1
 function getArrObjs(arr) {
   return arr.map(function (firstName) {
-    var newObjs = {};
-
-    newObjs.name = firstName;
-    return newObjs;
+    return { name: firstName };
   });
 }
 console.log(getArrObjs(["Vasya", "Kate", "Sasha"]));
 
 //2
 function getTimeNow(arr) {
-  return arr.reduce(function (initialValue, currentNumber) {
-    return initialValue + " : " + currentNumber;
-  }, "Текущее время");
+  return (
+    arr.reduce(function (initialValue, currentNumber) {
+      return initialValue + " : " + currentNumber;
+    }, '"Текущее время') + '"'
+  );
 }
 console.log(getTimeNow(["00", "13", "24"]));
 
@@ -38,17 +37,21 @@ function countSentencesLetters(text) {
     return element != "";
   });
 
-  return result.map(function (element) {
-    return (
+  result.forEach(function (element) {
+    console.log(
       element.trim() +
-      ": Letters quantity is: " +
-      element.replace(",", "").replace(/ /g, "").length
+        ": Letters quantity is: " +
+        element
+          .replace(",", "")
+          .split("")
+          .filter(function (letter) {
+            return letter.trim().length > 0;
+          }).length
     );
   });
 }
-console.log(
-  countSentencesLetters("Привет, студент! Студент... Как дела, студент?")
-);
+
+countSentencesLetters("Привет, студент! Студент... Как дела, студент?");
 
 //5*
 function countMaxNumberRepeat(text) {
