@@ -1,8 +1,6 @@
 var table = document.createElement("table"),
   tbody = document.createElement("tbody");
 
-var td;
-
 document.body.appendChild(table);
 table.appendChild(tbody);
 
@@ -23,20 +21,12 @@ createTableRows(3, 1);
 function createTableRows(cols, rows) {
   for (var i = 0; i < rows; i++) {
     var tr = document.createElement("tr");
-
     for (var k = 0; k < cols; k++) {
-      td = document.createElement("td");
+      var td = document.createElement("td");
 
       tr.appendChild(td);
-
-      // var input = document.createElement("input");
-      // input.type = "text";
-
-      // td.appendChild(input);
-
       td.style.cssText =
-        "border: 1px solid black; height: 40px; width: 250px; padding: 10px; text-align: center; font-size: 30px";
-      // input.style.cssText = "border: none; height: 30px; width: 200px";
+        "border: 1px solid black; height: 40px; width: 250px; padding: 10px; text-align: center; font-size: 20px";
     }
     if (currentTablerow == undefined) {
       tbody.appendChild(tr);
@@ -50,16 +40,34 @@ function createTableRows(cols, rows) {
 
 table.style.borderCollapse = "collapse";
 
+var input = document.createElement("input");
+input.type = "text";
+input.style.cssText = "border: none; height: 30px; width: 200px";
+
 table.addEventListener("click", function (event) {
   if (event.target != button.cells[0]) {
-    if (event.target.firstChild == null) {
-      var input = document.createElement("input");
-      input.type = "text";
-      input.style.cssText = "border: none; height: 30px; width: 200px";
-      event.target.appendChild(input).focus();
-    } else {
-      event.target.firstChild.focus();
+    var text = event.target.textContent;
+
+    event.target.textContent = null;
+    event.target.appendChild(input).focus();
+    input.value = text;
+  }
+});
+
+table.addEventListener("focusout", function (event) {
+  event.target.parentElement.innerHTML = event.target.value;
+  event.target.value = null;
+});
+
+//*
+table.addEventListener("keyup", function (event) {
+  if (event.keyCode == 13) {
+    if (event.target != button.cells[0]) {
+      var text = event.target.value;
+      event.target.textContent = null;
+
+      var perernt = event.target.parentElement;
+      perernt.textContent = text;
     }
   }
-  // event.target = input.focus();
 });
