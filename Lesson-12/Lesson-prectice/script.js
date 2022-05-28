@@ -12,11 +12,7 @@ secondPar.innerHTML =
 container.appendChild(firstPar);
 container.appendChild(secondPar);
 
-console.log(buttons);
-
 buttons[0].addEventListener("click", changeColor);
-
-console.log(firstPar.children);
 
 function changeColor() {
   for (var item of firstPar.children) {
