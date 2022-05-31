@@ -1,0 +1,13 @@
+.td {
+    border: 1px solid black;
+    height: 40px;
+    width: 250px;
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+}
+.input {
+    border: none;
+    height: 30px;
+    width: 200px;
+}
