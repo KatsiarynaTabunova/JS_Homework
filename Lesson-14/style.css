@@ -24,14 +24,14 @@ body {
     display: flex;
     border-top: none;
 }
-.userBtns {
+.user-btns {
     background-color: #00ff33;
     border: none;
     padding: 8px 30px;
     margin-right: 10px;
     border-radius: 10px 10px 0 0;
 }
-.userBtnsChange {
+.user-btns-change {
     background-color: white;
     border-color: white;
     padding: 6px 30px;
@@ -41,7 +41,7 @@ body {
 .image {
     margin: 20px;
 }
-.styleText {
+.style-text {
     display: flex;
     flex-direction: column;
     vertical-align: middle;

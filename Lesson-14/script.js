@@ -31,7 +31,7 @@ textDiv.appendChild(firstName);
 var lastName = document.createElement('span');
 textDiv.appendChild(lastName);
 
-textDiv.className = 'styleText';
+textDiv.className = 'style-text';
 
 btns[0].addEventListener('click', function () {
     var storageUsersKey = 'All users:';
@@ -79,7 +79,7 @@ function showUsers(users) {
 
     for (var i = 0; i < users.length; i++) {
         var userBtn = document.createElement('button');
-        userBtn.className = 'userBtns';
+        userBtn.className = 'user-btns';
         userBtn.textContent = 'User ' + (users[i].id - 6);
 
         userBtnArray.push(userBtn);
@@ -92,9 +92,9 @@ function showUsers(users) {
                 'click',
                 function () {
                     for (var i = 0; i < userBtnArray.length; i++) {
-                        userBtnArray[i].classList.remove('userBtnsChange');
+                        userBtnArray[i].classList.remove('user-btns-change');
                     }
-                    event.target.classList.add('userBtnsChange');
+                    event.target.classList.add('user-btns-change');
                     showUserInfo(user, event.target);
                 },
                 false
@@ -105,7 +105,7 @@ function showUsers(users) {
     showUserInfo(users[0], userBtnArray[0]);
 
     function showUserInfo(user, firstBtn) {
-        firstBtn.classList.add('userBtnsChange');
+        firstBtn.classList.add('user-btns-change');
 
         image.src = user.avatar;
         image.className = 'image';
