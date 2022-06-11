@@ -11,9 +11,9 @@ pageContentDiv.appendChild(mainBlockDiv);
 mainBlockDiv.appendChild(userTabsDiv);
 mainBlockDiv.appendChild(infoBlockDiv);
 
-pageContentDiv.className = 'page-content';
-userTabsDiv.className = 'user-tabs';
-infoBlockDiv.className = 'info-block';
+pageContentDiv.classList.add('page-content');
+userTabsDiv.classList.add('user-tabs');
+infoBlockDiv.classList.add('info-block');
 infoBlockDiv.style.display = 'none';
 
 btn.textContent = 'Get Users List';
@@ -31,7 +31,7 @@ textDiv.appendChild(firstName);
 var lastName = document.createElement('span');
 textDiv.appendChild(lastName);
 
-textDiv.className = 'style-text';
+textDiv.classList.add('style-text');
 
 btns[0].addEventListener('click', function () {
     var storageUsersKey = 'All users:';
@@ -53,7 +53,7 @@ btns[0].addEventListener('click', function () {
                 console.log('возникло исключение!');
                 var blockError = document.createElement('div');
                 document.body.appendChild(blockError);
-                blockError.className = 'block-error';
+                blockError.classList.add('block-error');
                 blockError.innerHTML =
                     'Произошла ошибка! Данные не получены! Ошибка: ' +
                     statusType;
@@ -79,7 +79,7 @@ function showUsers(users) {
 
     for (var i = 0; i < users.length; i++) {
         var userBtn = document.createElement('button');
-        userBtn.className = 'user-btns';
+        userBtn.classList.add('user-btns');
         userBtn.textContent = 'User ' + (users[i].id - 6);
 
         userBtnArray.push(userBtn);
@@ -108,7 +108,7 @@ function showUsers(users) {
         firstBtn.classList.add('user-btns-change');
 
         image.src = user.avatar;
-        image.className = 'image';
+        image.classList.add('image');
 
         firstName.innerHTML = 'First Name: ' + user.first_name;
         lastName.innerHTML = 'Last Name: ' + user.last_name;

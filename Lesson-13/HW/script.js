@@ -50,7 +50,7 @@ function createTable(colms, rows) {
 
     document.body.appendChild(table);
     table.appendChild(tBody);
-    table.className = 'table';
+    table.classList.add('table');
 
     for (var i = 1; i <= rows; i++) {
         var tr = document.createElement('tr');
@@ -60,7 +60,7 @@ function createTable(colms, rows) {
             tBody.appendChild(tr);
             tr.appendChild(td);
 
-            td.className = 'td';
+            td.classList.add('td');
 
             if ((i + k + j) % 2 == 0) {
                 td.style.backgroundColor = 'black';

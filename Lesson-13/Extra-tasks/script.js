@@ -19,7 +19,7 @@ var initialObj = {
 
 var obj1 = {
     string: 'Vasya',
-    num: 40,
+    number: 30,
     boolean: true,
     undefined: undefined,
     null: null,
@@ -32,7 +32,7 @@ var obj1 = {
         object3: {},
     },
     method: function () {
-        alert('Hi!');
+        alert('Hello');
     },
 };
 
@@ -92,28 +92,37 @@ console.log(clonedObj);
 
 //2
 function deepEqual(initialObj, obj1) {
+    if (Object.keys(initialObj).length !== Object.keys(obj1).length) {
+        return false;
+    }
     for (var key in initialObj) {
         var result;
         if (typeof initialObj[key] == 'function') {
             result =
                 obj1.hasOwnProperty(key) &&
                 initialObj[key].toString() === obj1[key].toString();
+            if (!result) return false;
         } else if (Array.isArray(initialObj[key])) {
             var array = initialObj[key];
-
+            if (array.length !== obj1[key].length) {
+                return false;
+            }
             for (var i = 0; i < array.length; i++) {
                 if (isObject(array[i])) {
                     result = deepEqual(array[i], obj1[key][i]);
+                    if (!result) return false;
                 } else {
                     result = array[i] === obj1[key][i];
+                    if (!result) return false;
                 }
             }
         } else if (isObject(initialObj[key])) {
-            result = deepEqual(array, obj1[key]);
+            result = deepEqual(initialObj[key], obj1[key]);
+            if (!result) return false;
         } else {
-            result = initialObj[key] == obj1[key];
+            result = initialObj[key] === obj1[key];
+            if (!result) return false;
         }
-        if (!result) return false;
     }
     return true;
 }
