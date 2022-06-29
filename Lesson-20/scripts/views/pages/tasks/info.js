@@ -13,7 +13,8 @@ class Info extends Component {
         let html;
 
         if (this.task) {
-            const {id, title, status} = this.task;
+            const {id, title, description, status} = this.task;
+            let descriptionNotEmpty = (description === '') ? 'No Description' : description;
 
             html = `
                 <h1 class="page-title">Task Info</h1>
@@ -22,6 +23,10 @@ class Info extends Component {
                     <p>
                         <b>Task Title:</b>
                         ${title}
+                    </p>
+                    <p>
+                    <b>Task Description:</b>
+                    ${descriptionNotEmpty}
                     </p>
                     <p>
                         <b>Task Status:</b>

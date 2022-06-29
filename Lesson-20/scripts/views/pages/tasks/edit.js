@@ -15,7 +15,7 @@ class Edit extends Component {
         let html;
 
         if (this.isEditEnable()) {
-            const {id, title} = this.task;
+            const {id, title, description} = this.task;
 
             html = `
                 <h1 class="page-title">Task Edit</h1>
@@ -25,7 +25,10 @@ class Edit extends Component {
                         <b>Task Title:</b>
                         <input class="task-edit__title" type="text" value="${title}">
                     </p>
-            
+                    <p>
+                        <b>Task Description:</b>
+                        <textarea class="task-edit__description" >${description}</textarea>
+                    </p>
                     <div class="task-edit__buttons">
                         <button class="task-edit__btn-save button">Save Task</button>
                         <a class="task-edit__btn-back button" href="#/task/${id}">Back to Info</a>
@@ -49,7 +52,7 @@ class Edit extends Component {
 
     setActions() {
         const taskTitleInput = document.getElementsByClassName('task-edit__title')[0],
-			saveTaskBtn = document.getElementsByClassName('task-edit__btn-save')[0];
+            saveTaskBtn = document.getElementsByClassName('task-edit__btn-save')[0];
 
         taskTitleInput.onkeyup = () => saveTaskBtn.disabled = !taskTitleInput.value.trim();
         saveTaskBtn.onclick = () => this.editTask(taskTitleInput);

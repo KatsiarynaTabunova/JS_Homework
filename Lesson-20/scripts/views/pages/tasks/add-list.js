@@ -10,16 +10,29 @@ class AddAndList extends Component {
             <h1 class="page-title">Tasks List</h1>
                 
             <div class="task-add">
-                <input class="task-add__title" type="text" placeholder="Task title">
-                
-                <button class="task-add__btn-add button" disabled>Add Task</button>
+                <div>
+                    <input class="task-add__title" type="text" placeholder="Task title">
+                </div>  
+                <div>                 
+                    <textarea class="task-add__description" placeholder="Task description"></textarea>
+                </div>    
+                <div>
+                    <button class="task-add__btn-add button" disabled>Add Task</button>
+                </div>
             </div>       
-                  
+                        
             <div class="tasks">
+            
+                <div class="tasks-clear">
+                 <span class = "tasks-clear__counter">There are ${this.tasks.length} tasks in a list.</span>
+                 <button class="tasks-clear__button">Clear Tasks List</button>
+                 </div>  
+             
                 <div class="tasks__list">
                     ${this.tasks.map(task => this.getTaskHTML(task)).join('\n ')}
                 </div>
-            </div>            
+            </div>  
+                    
         `;
     }
 
@@ -29,18 +42,38 @@ class AddAndList extends Component {
 
     setActions() {
         const taskTitleInput = document.getElementsByClassName('task-add__title')[0],
-			addTaskBtn = document.getElementsByClassName('task-add__btn-add')[0],
-			tasksContainer = document.getElementsByClassName('tasks')[0],
-			tasksList = document.getElementsByClassName('tasks__list')[0];
+            taskDescriptionInput = document.getElementsByClassName('task-add__description')[0],
+            addTaskBtn = document.getElementsByClassName('task-add__btn-add')[0],
+            tasksContainer = document.getElementsByClassName('tasks')[0],
+            taskCounter = document.getElementsByClassName('tasks-clear__counter')[0],
+            tasksList = document.getElementsByClassName('tasks__list')[0],
+            clearTaskBtn = document.getElementsByClassName('tasks-clear__button')[0];
 
         taskTitleInput.onkeyup = () => addTaskBtn.disabled = !taskTitleInput.value.trim();
-        addTaskBtn.onclick = () => this.addTask(taskTitleInput, addTaskBtn, tasksList);
 
-		tasksContainer.onclick = evt => {
+        this.tasks.length > 0 ? clearTaskBtn.disabled = false : clearTaskBtn.disabled = true;
+
+        addTaskBtn.onclick = () => {
+            this.addTask(taskTitleInput, taskDescriptionInput, addTaskBtn, tasksList);
+            clearTaskBtn.disabled = false;
+            taskCounter.innerHTML = `There are ${this.tasks.length} tasks in a list.`;
+        }
+
+        clearTaskBtn.onclick = () => {
+            if (confirm('Are you sure?')) {
+                taskCounter.innerHTML = 'Tasks list is empty!';
+                tasksList.innerHTML = '';
+                clearTaskBtn.disabled = true;
+                this.tasks = [];
+                Tasks.setTasksToLS(this.tasks);
+            }
+        }
+
+        tasksContainer.onclick = evt => {
             const target = evt.target,
                 targetClassList = target.classList;
 
-            switch(true) {
+            switch (true) {
                 case targetClassList.contains('task'):
                 case targetClassList.contains('task__title'):
                     this.redirectToTaskInfo(target.dataset.id);
@@ -48,22 +81,25 @@ class AddAndList extends Component {
 
                 case targetClassList.contains('task__btn-remove'):
                     this.removeTask(target.parentNode.parentNode);
+                    taskCounter.innerHTML = `There are ${this.tasks.length} tasks in a list.`;
                     break;
             }
         };
     }
 
-    addTask(taskTitleInput, addTaskBtn, tasksList) {
-		const newTask = {
-			id: generateID(),
-			title: taskTitleInput.value.trim(),
-			status: 'In Progress'
-		};
+    addTask(taskTitleInput, taskDescriptionInput, addTaskBtn, tasksList) {
+        console.log(taskDescriptionInput.textContent);
+        const newTask = {
+            id: generateID(),
+            title: taskTitleInput.value.trim(),
+            description: taskDescriptionInput.value.trim(),
+            status: 'In Progress'
+        };
 
         this.tasks.push(newTask);
         Tasks.setTasksToLS(this.tasks);
 
-		this.clearAddTask(taskTitleInput, addTaskBtn);
+        this.clearAddTask(taskTitleInput, taskDescriptionInput, addTaskBtn);
 
         tasksList.insertAdjacentHTML('beforeEnd', this.getTaskHTML(newTask));
     }
@@ -82,8 +118,9 @@ class AddAndList extends Component {
         `;
     }
 
-    clearAddTask(taskTitleInput, addTaskBtn) {
+    clearAddTask(taskTitleInput, taskDescriptionInput, addTaskBtn) {
         taskTitleInput.value = '';
+        taskDescriptionInput.value = '';
         addTaskBtn.disabled = true;
     }
 
@@ -97,6 +134,8 @@ class AddAndList extends Component {
             Tasks.setTasksToLS(this.tasks);
 
             taskContainer.remove();
+            const clearTaskBtn = document.getElementsByClassName('tasks-clear__button')[0];
+            this.tasks.length > 0 ? clearTaskBtn.disabled = false : clearTaskBtn.disabled = true;
         }
     }
 }

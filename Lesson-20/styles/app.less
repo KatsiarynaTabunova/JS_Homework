@@ -110,9 +110,57 @@ body {
     outline: none;
   }
 
+  &__description {
+    width: 300px;
+    height: 70px;
+    margin: 5px 6px 5px 0;
+    padding: 4px 8px;
+    border: solid black 1px;
+    border-radius: 4px;
+    outline: none;
+    resize: none;
+  }
+
   &__btn-add {
     padding: 8px 16px;
     font-size: 14px;
+  }
+}
+
+.tasks-clear {
+  max-width: 600px;
+  margin: 30px auto 0;
+  display: flex;
+  justify-content: space-between;
+
+  &__counter {
+    font-weight: bold;
+  }
+
+  &__button {
+    display: flex;
+    background: black;
+    color: white;
+    padding: 6px 14px;
+    font-size: 14px;
+    border: solid black 1px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all .3s;
+
+    &:hover {
+      border-radius: 0;
+    }
+
+    &:disabled {
+      background: @grey;
+      border-color: @grey;
+      cursor: default;
+
+      &:disabled:hover {
+        border-radius: 20px;
+      }
+    }
   }
 }
 
@@ -193,5 +241,11 @@ body {
 
   &__title {
     width: 230px;
+  }
+
+  &__description {
+    width: 175px;
+    height: 70px;
+    resize: none;
   }
 }
