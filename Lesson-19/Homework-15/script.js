@@ -1,56 +1,73 @@
-const btnStart = document.getElementsByClassName('switcher'),
-    blockTimer = document.getElementsByClassName('time'),
+const btnStart = document.getElementsByClassName('switcher')[0],
+    blockTimer = document.getElementsByClassName('time')[0],
     initial = 'initial',
     running = 'running',
-    stopped = 'stopped';
+    stopped = 'stopped',
+    finished = 'finished';
 
-const blockMillisec = document.getElementsByClassName('milliseconds'),
-    blockSec = document.getElementsByClassName('seconds'),
-    blockMin = document.getElementsByClassName('minutes');
+const blockMillisec = document.getElementsByClassName('milliseconds')[0],
+    blockSec = document.getElementsByClassName('seconds')[0],
+    blockMin = document.getElementsByClassName('minutes')[0];
 
-let millisecsNum = blockMillisec[0].innerHTML,
-    secsNum = blockSec[0].innerHTML,
-    minsNum = blockMin[0].innerHTML,
-    interval
+let millisecsNum = blockMillisec.innerHTML,
+    secsNum = blockSec.innerHTML,
+    minsNum = blockMin.innerHTML,
+    interval;
 
-btnStart[0].addEventListener('click', () => {
+btnStart.addEventListener('click', () => {
     toggleTimerState();
     renderTimerState();
-    if (blockTimer[0].dataset.status === initial) {
+    if (blockTimer.dataset.status === initial) {
         interval = setInterval(myTimer, 10);
         resetTimerState();
     }
 });
 
 function toggleTimerState() {
-    switch (blockTimer[0].dataset.status) {
+    switch (blockTimer.dataset.status) {
         case initial:
-            blockTimer[0].dataset.status = running;
+            blockTimer.dataset.status = running;
             break;
         case running:
-            blockTimer[0].dataset.status = stopped;
+            blockTimer.dataset.status = stopped;
             break;
         case stopped:
-            blockTimer[0].dataset.status = running;
+            blockTimer.dataset.status = running;
             break;
     }
 }
 
 function renderTimerState() {
-    switch (blockTimer[0].dataset.status) {
+    switch (blockTimer.dataset.status) {
         case initial:
-            btnStart[0].innerHTML = 'Start';
-            blockResult[0].style.display = "none";
+            showElement(btnStart, true);
+            btnStart.innerHTML = 'Start';
+            showElement(btnReset, false);
+            showElement(btnSave, false);
+            showElement(blockTimestamps, false);
             break;
         case running:
-            btnStart[0].innerHTML = 'Stop';
+            showElement(btnStart, true);
+            btnStart.innerHTML = 'Stop';
             interval = setInterval(myTimer, 10);
-            blockResult[0].style.display = "inline-block";
+            showElement(btnReset, true);
+            showElement(btnSave, true);
+            showElement(blockTimestamps, true);
             break;
         case stopped:
-            btnStart[0].innerHTML = 'Run';
+            showElement(btnStart, true);
+            btnStart.innerHTML = 'Run';
             clearInterval(interval);
-            blockResult[0].style.display = "inline-block";
+            showElement(btnReset, true);
+            showElement(btnSave, true);
+            showElement(blockTimestamps, true);
+            break;
+        case finished:
+            showElement(btnStart, false);
+            btnStart.innerHTML = 'Start';
+            showElement(btnReset, true);
+            showElement(btnSave, false);
+            showElement(blockTimestamps, true);
             break;
     }
 }
@@ -74,23 +91,20 @@ function myTimer() {
             }
             if (+minsNum === 60) {
                 clearInterval(interval);
-                btnSave.remove();
-                btnStart[0].remove();
-                blockTimer[0].dataset.status = initial;
+                blockTimer.dataset.status = finished;
+                renderTimerState();
             }
         }
     }
-    blockMillisec[0].innerHTML = millisecsNum;
-    blockSec[0].innerHTML = secsNum;
-    blockMin[0].innerHTML = minsNum;
+    blockMillisec.innerHTML = millisecsNum;
+    blockSec.innerHTML = secsNum;
+    blockMin.innerHTML = minsNum;
 }
 
 const blockResult = document.getElementsByClassName('result'),
     btnReset = blockResult[0].firstElementChild,
     btnSave = blockResult[0].children[2],
-    blockTimestamps = document.createElement('div');
-
-blockResult[0].appendChild(blockTimestamps);
+    blockTimestamps = document.getElementsByClassName('timestamps')[0];
 
 let timestamp,
     i = 1,
@@ -99,18 +113,17 @@ let timestamp,
 btnReset.addEventListener('click', () => {
     clearInterval(interval);
     resetTimerState();
-    blockResult[0].style.display = 'none';
     blockTimestamps.innerHTML = '';
     i = 1;
-    blockTimer[0].dataset.status = 'initial';
-    btnStart[0].innerHTML = 'Start';
+    blockTimer.dataset.status = 'initial';
+    renderTimerState();
     arrStamps = [];
 });
 
 btnSave.addEventListener('click', () => {
-    let milisek = blockMillisec[0].innerHTML,
-        sec = blockSec[0].innerHTML,
-        min = blockMin[0].innerHTML;
+    let milisek = blockMillisec.innerHTML,
+        sec = blockSec.innerHTML,
+        min = blockMin.innerHTML;
     const timeText = `${i++}) ${min} : ${sec} : ${milisek}`;
     timestamp = document.createElement('div');
     timestamp.innerHTML += timeText;
@@ -119,9 +132,9 @@ btnSave.addEventListener('click', () => {
 });
 
 function resetTimerState() {
-    blockMillisec[0].innerHTML = '00';
-    blockSec[0].innerHTML = '00';
-    blockMin[0].innerHTML = '00';
+    blockMillisec.innerHTML = '00';
+    blockSec.innerHTML = '00';
+    blockMin.innerHTML = '00';
     millisecsNum = '00';
     secsNum = '00';
     minsNum = '00';
@@ -130,17 +143,25 @@ function resetTimerState() {
 window.addEventListener('beforeunload', pageClosed, false);
 window.addEventListener('load', pageOpened, false);
 
-let getStyle = getComputedStyle(blockResult[0]);
+function showElement(Element, show) {
+    if (show) {
+        Element.classList.add('block-visible');
+        Element.classList.remove('block-hidden');
+    } else {
+        Element.classList.remove('block-visible');
+        Element.classList.add('block-hidden');
+    }
+}
 
 function pageClosed() {
     localStorage.setItem('msec', millisecsNum);
     localStorage.setItem('sec', secsNum);
     localStorage.setItem('min', minsNum);
 
-    localStorage.setItem('status', blockTimer[0].dataset.status);
-    localStorage.setItem('style', getStyle.display);
+    localStorage.setItem('status', blockTimer.dataset.status);
     localStorage.setItem('stamps', JSON.stringify(arrStamps));
 }
+
 
 function pageOpened() {
     millisecsNum = localStorage.getItem('msec');
@@ -152,21 +173,18 @@ function pageOpened() {
         secsNum = '00';
         minsNum = '00';
     }
-    blockMillisec[0].innerHTML = millisecsNum;
-    blockSec[0].innerHTML = secsNum;
-    blockMin[0].innerHTML = minsNum;
+    blockMillisec.innerHTML = millisecsNum;
+    blockSec.innerHTML = secsNum;
+    blockMin.innerHTML = minsNum;
 
-    blockTimer[0].dataset.status = localStorage.getItem('status');
-    if (blockTimer[0].dataset.status === 'null') {
-        blockTimer[0].dataset.status = initial;
+    blockTimer.dataset.status = localStorage.getItem('status');
+    if (blockTimer.dataset.status === 'null') {
+        blockTimer.dataset.status = initial;
     }
-    if (blockTimer[0].dataset.status === initial) {
+    if (blockTimer.dataset.status === initial) {
         resetTimerState();
     }
-    let btnStyle = localStorage.getItem('style');
-    if (btnStyle === 'inline-block') {
-        blockResult[0].style.display = "inline-block";
-    }
+
     arrStamps = JSON.parse(localStorage.getItem('stamps'));
     for (let value of arrStamps) {
         timestamp = document.createElement('div');
