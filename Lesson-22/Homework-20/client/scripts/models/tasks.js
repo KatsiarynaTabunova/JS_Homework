@@ -42,6 +42,12 @@ class Tasks {
             body: JSON.stringify(updatedTask)
         });
     }
+
+    async removeTask(taskId) {
+        await fetch(`http://localhost:3000/api/task/${taskId}`, {
+            method: 'DELETE'
+        });
+    }
 }
 
 export default Tasks;

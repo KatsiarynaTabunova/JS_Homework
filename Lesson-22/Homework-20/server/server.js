@@ -64,6 +64,14 @@ app.put('/api/task/:id/update', (req, res) => {
     res.sendStatus(204);
 });
 
+app.delete('/api/task/:id', (req, res) => {
+    const tasksData = getTasksFromDB(),
+        newTaskData = tasksData.filter(task => task.id !== req.params.id)
+
+    setTasksToDB(newTaskData);
+
+    res.sendStatus(204);
+});
 
 function getTasksFromDB() {
     return JSON.parse(fs.readFileSync(dbFilePath, 'utf8'));

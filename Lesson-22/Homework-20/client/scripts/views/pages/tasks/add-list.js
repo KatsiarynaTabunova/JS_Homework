@@ -167,6 +167,9 @@ class AddAndList extends Component {
             !tasksList.children.length && (clearTasksListBtn.disabled = true);
 
             this.countTasksAmount();
+
+            const taskId = taskContainer.dataset.id;
+            this.model.removeTask(taskId);
         }
     }
 }
