@@ -3,18 +3,18 @@ import Component from '../../../views/component.js';
 import Tasks from '../../../models/tasks.js';
 
 class AddAndList extends Component {
-	constructor() {
-		super();
-		
-		this.model = new Tasks();
-	}
+    constructor() {
+        super();
+
+        this.model = new Tasks();
+    }
 
     async getData() {
         return await this.model.getTasksList();
     }
-	
+
     async render(tasks) {
-		return `
+        return `
             <h1 class="page-title">Tasks List</h1>
         
             <div class="task-add">
@@ -42,27 +42,27 @@ class AddAndList extends Component {
 
     async afterRender() {
         this.setActions();
-        
-		this.countTasksAmount();
+
+        this.countTasksAmount();
     }
 
     setActions() {
         const taskTitleField = document.getElementsByClassName('task-add__title')[0],
             taskDescriptionField = document.getElementsByClassName('task-add__description')[0],
-			addTaskBtn = document.getElementsByClassName('task-add__btn-add')[0],
-			tasksContainer = document.getElementsByClassName('tasks')[0],
-			clearTasksListBtn = tasksContainer.getElementsByClassName('tasks__btn-clear')[0],
-			tasksList = tasksContainer.getElementsByClassName('tasks__list')[0];
+            addTaskBtn = document.getElementsByClassName('task-add__btn-add')[0],
+            tasksContainer = document.getElementsByClassName('tasks')[0],
+            clearTasksListBtn = tasksContainer.getElementsByClassName('tasks__btn-clear')[0],
+            tasksList = tasksContainer.getElementsByClassName('tasks__list')[0];
 
         taskTitleField.onkeyup = () => addTaskBtn.disabled = !taskTitleField.value.trim();
         addTaskBtn.onclick = () => this.addTask(taskTitleField, taskDescriptionField, addTaskBtn,
-                                                clearTasksListBtn, tasksList);
-	
-		tasksContainer.onclick = evt => {
+            clearTasksListBtn, tasksList);
+
+        tasksContainer.onclick = evt => {
             const target = evt.target,
                 targetClassList = target.classList;
 
-            switch(true) {
+            switch (true) {
                 case targetClassList.contains('tasks__btn-clear'):
                     this.clearTasksList(tasksList, clearTasksListBtn);
                     break;
@@ -74,7 +74,7 @@ class AddAndList extends Component {
 
                 case targetClassList.contains('task__btn-done'):
                     this.changeTaskStatus(target.parentNode.parentNode,
-                                          target.previousElementSibling, target);
+                        target.previousElementSibling, target);
                     break;
 
                 case targetClassList.contains('task__btn-remove'):
@@ -101,17 +101,17 @@ class AddAndList extends Component {
     }
 
     getTaskHTML(task) {
-    	const statusDone = task.status === 'Done';
-    	
+        const statusDone = task.status === 'Done';
+
         return `
             <div class="task ${statusDone ? 'task_done' : ''}" data-id="${task.id}">
                 <a class="task__title" data-id="${task.id}">${task.title}</a>
                 
                 <div class="task__buttons">
                 	${!statusDone ?
-                    	`<a class="task__btn-edit button" href="#/task/${task.id}/edit">Edit</a>
+            `<a class="task__btn-edit button" href="#/task/${task.id}/edit">Edit</a>
                     	 <a class="task__btn-done button">Done</a>`
-					: ''}
+            : ''}
                     <a class="task__btn-remove button">Remove</a>   
                 </div>                            
             </div>
@@ -137,34 +137,36 @@ class AddAndList extends Component {
             `There ${toBeVerbForm} <span class="tasks__counter-done">${doneAmount}</span> ${taskWordForm} of ` +
             `<span class="tasks__counter-total">${totalAmount}</span> ${toBeVerbForm} done`;
     }
-	
+
     clearTasksList(tasksList, clearTasksListBtn) {
-    	if (confirm('Are you sure?')) {
-			clearTasksListBtn.disabled = true;
-			tasksList.innerHTML = '';
-		
-			this.countTasksAmount();
-		}
-	}
-	
+        if (confirm('Are you sure?')) {
+            clearTasksListBtn.disabled = true;
+            tasksList.innerHTML = '';
+
+            this.countTasksAmount();
+        }
+    }
+
     redirectToTaskInfo(id) {
         location.hash = `#/task/${id}`;
     }
 
     changeTaskStatus(taskContainer, editTaskBtn, doneTaskBtn) {
-    	taskContainer.classList.add('task_done');
-		editTaskBtn.remove();
-		doneTaskBtn.remove();
-		
-		this.countTasksAmount();
-	}
-	
+        taskContainer.classList.add('task_done');
+        editTaskBtn.remove();
+        doneTaskBtn.remove();
+
+        this.countTasksAmount();
+        const taskId = taskContainer.dataset.id;
+        this.model.updateTaskStatus(taskId, 'Done');
+    }
+
     removeTask(tasksList, taskContainer, clearTasksListBtn) {
         if (confirm('Are you sure?')) {
             taskContainer.remove();
             !tasksList.children.length && (clearTasksListBtn.disabled = true);
-	
-			this.countTasksAmount();
+
+            this.countTasksAmount();
         }
     }
 }
