@@ -73,6 +73,15 @@ app.delete('/api/task/:id', (req, res) => {
     res.sendStatus(204);
 });
 
+app.delete('/api/task', (req, res) => {
+    let tasksData = getTasksFromDB();
+    tasksData = [];
+
+    setTasksToDB(tasksData);
+
+    res.sendStatus(204);
+});
+
 function getTasksFromDB() {
     return JSON.parse(fs.readFileSync(dbFilePath, 'utf8'));
 }

@@ -48,6 +48,11 @@ class Tasks {
             method: 'DELETE'
         });
     }
+    async clearTasksList() {
+        await fetch(`http://localhost:3000/api/task`, {
+            method: 'DELETE'
+        });
+    }
 }
 
 export default Tasks;

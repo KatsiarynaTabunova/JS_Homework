@@ -144,6 +144,7 @@ class AddAndList extends Component {
             tasksList.innerHTML = '';
 
             this.countTasksAmount();
+            this.model.clearTasksList();
         }
     }
 
